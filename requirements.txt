@@ -1,0 +1,11 @@
+fastapi[standard]
+sqlalchemy
+alembic
+pytest
+pytest-asyncio
+httpx
+faker
+python-dotenv
+email-validator
+passlib[bcrypt]
+pyjwt
