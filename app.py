@@ -11,14 +11,10 @@ from exceptions import CustomExceptionA, CustomExceptionB, ProductNotFoundExcept
 
 load_dotenv()
 
-# Создание таблиц
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Контрольная работа №4")
 
-# =====================================================
-# ЗАДАНИЕ 10.1: Пользовательская обработка ошибок
-# =====================================================
 
 @app.exception_handler(CustomExceptionA)
 async def custom_exception_a_handler(request: Request, exc: CustomExceptionA):
@@ -46,9 +42,7 @@ def trigger_exception_b(item_id: int):
         raise CustomExceptionB(f"Item {item_id} not found")
     return {"message": f"Item {item_id} found"}
 
-# =====================================================
-# ЗАДАНИЕ 10.2: Валидация данных запроса
-# =====================================================
+
 
 @app.exception_handler(HTTPException)
 async def validation_exception_handler(request: Request, exc: HTTPException):
@@ -61,11 +55,7 @@ async def validation_exception_handler(request: Request, exc: HTTPException):
 def validate_user(user: User):
     return {"message": f"User {user.username} is valid", "user": user.model_dump()}
 
-# =====================================================
-# ЗАДАНИЕ 9.1: CRUD для Product (с SQLAlchemy)
-# =====================================================
 
-# Pydantic модели для Product
 from pydantic import BaseModel as PydanticBaseModel
 
 class ProductCreate(PydanticBaseModel):
@@ -78,7 +68,7 @@ class ProductResponse(PydanticBaseModel):
     title: str
     price: float
     count: int
-    description: str = ""  # Добавлено после миграции
+    description: str = ""  
 
 class ProductUpdate(PydanticBaseModel):
     title: str | None = None
@@ -127,9 +117,6 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
     db.commit()
     return None
 
-# =====================================================
-# ЗАДАНИЕ 11.1: Простое приложение с тремя эндпоинтами
-# =====================================================
 
 from itertools import count
 from threading import Lock
@@ -170,9 +157,6 @@ def delete_user(user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     return None
 
-# =====================================================
-# Запуск
-# =====================================================
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)

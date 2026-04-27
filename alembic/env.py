@@ -1,7 +1,6 @@
 import sys
 from os.path import dirname, abspath
 
-# Добавляем папку проекта в путь
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 from logging.config import fileConfig
@@ -9,14 +8,13 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
-# Импортируем ваши модели
 from database import Base
-from database import Product  # или что у вас импортируется
+from database import Product  
 
 config = context.config
 fileConfig(config.config_file_name)
 
-target_metadata = Base.metadata  # ВАЖНО: нужно указать метаданные
+target_metadata = Base.metadata  
 
 def run_migrations_offline():
     url = config.get_main_option("sqlalchemy.url")
